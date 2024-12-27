@@ -1,50 +1,31 @@
+<!-- template放的是HTML样式的代码，但可以写一些vue命令，例如v-for,v-bind，类似于特殊的HTML代码。
+ 还可以绑定vue组件，类似于<NavBar />一个目录导航，在script里面导入。 -->
 <template>
-  <div>
-    <div>Bot昵称：{{ bot_name }}</div>
-    <div>Bot战力：{{ bot_rating }}</div>
-  </div>
+  <NavBar />
+  <!-- 这个是用来导航的，写在router文件夹的index.js里面 -->
   <router-view/>
 </template>
 
 <script>
-import $ from 'jquery';
-import { ref } from 'vue';
-
-export default{
-  name:"App",
-  // setup是整个函数的入口,想在当前页面去调用一下http://localhost:3000/pk/getbotinfo/这个链接
-  // 然后返回这两个值，将他显示出来，用ajax来取，
-  // 需要定义两个变量，第一个是昵称，第二个是战力，需要先import一个ref
-  setup:()=>{
-    let bot_name=ref("");
-    let bot_rating=ref("");
-
-    //访问后端链接用ajax来写
-    //请求类型一共只有两种，一个是get是获取数据，一个是post是创建数据
-    //其他请求，delete是删除一个数据，put是修改一个数据
-    $.ajax({
-      url:"http://localhost:3000/pk/getbotinfo/",
-      type:"get",
-      success:resp=>{
-        // console.log(resp);输出的值{name: 'tiger', rating: '1500'}
-        bot_name.value=resp.name;
-        bot_rating.value=resp.rating;
-      }
-    })
-
-
-    return{
-      //return的值就可以在template里调用了
-      bot_name,
-      bot_rating
-    }
+// @ 是路径别名，通常指向项目的 src 目录。
+// 使用别名的好处是避免书写相对路径（如 ../../components/NavBar.vue），提高代码的可读性和维护性。
+import NavBar from './components/NavBar.vue'
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap/dist/js/bootstrap"
+// import：将外部的文件或模块引入当前文件。
+// components：将导入的组件注册到当前组件中，允许在 <template> 中使用这些组件。
+export default {
+  components: {
+    NavBar
   }
 }
 </script>
+
 <style>
 /* @/表示我们当前目录根目录 */
+/* body 是一个全局的 CSS 选择器，用于修饰整个页面的 <body> 元素 的样式。 */
 body{
-  background-image: url("@/assets/background.png");
+  background-image: url("@/assets/images/background.png");
   /* 百分百填充 */
   background-size: cover;
 }
